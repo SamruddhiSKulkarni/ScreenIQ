@@ -117,8 +117,8 @@ ScreenIQ/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Kulkarnisamruddh/CampusScreen.git
-cd CampusScreen
+git clone https://github.com/SamruddhiSKulkarni/ScreenIQ.git
+cd ScreenIQ
 ```
 
 ### 2. Backend Setup
@@ -247,7 +247,7 @@ CREATE POLICY "Users can view results for their sessions"
 
 **Samruddhi Kulkarni**  
 - LinkedIn: [samruddhi-kulkarni-31a653261](https://www.linkedin.com/in/samruddhi-kulkarni-31a653261)  
-- GitHub: [@Kulkarnisamruddh](https://github.com/Kulkarnisamruddh)  
+- GitHub: [@SamruddhiSKulkarni](https://github.com/SamruddhiSKulkarni)  
 - Email: samruddhi.kulkarni72@gmail.com  
 
 ---
