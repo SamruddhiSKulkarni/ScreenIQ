@@ -1,7 +1,7 @@
 <div align="center">
   <img src="frontend/public/logo.png" alt="ScreenIQ Logo" width="110" />
   <h1>ScreenIQ</h1>
-  <p>AI-assisted bulk resume screener with non-LLM baseline comparison and human-in-the-loop review.</p>
+  <p>An exploratory AI-assisted resume screening prototype with non-LLM baseline comparison and human review tools.</p>
   <a href="https://screen-iq.vercel.app/"><strong>View Live Demo »</strong></a>
 </div>
 
@@ -9,28 +9,51 @@
 
 ## Overview
 
-ScreenIQ is a web application designed to help college placement teams and HR recruiters review batches of resumes against job descriptions.
+ScreenIQ is a full-stack prototype designed to explore how LLMs and classical NLP can assist college placement teams and recruiters during initial resume reviews.
 
-To avoid relying strictly on generative LLM evaluations, ScreenIQ provides a dual-evaluation approach: candidates can be screened using Groq-powered LLMs or evaluated against a deterministic **TF-IDF cosine similarity baseline**. This non-LLM control gives recruiters an objective keyword match reference to compare against generative output before making shortlisting decisions using an interactive side-by-side comparison matrix.
+Rather than treating LLM scores as autonomous hiring decisions, ScreenIQ is built strictly as a human-assistive tool. It combines LLM-based first-pass candidate synthesis with a deterministic **TF-IDF cosine similarity baseline**, allowing reviewers to cross-reference generative outputs against deterministic keyword matching before conducting side-by-side manual comparisons.
 
 ---
 
-## Key Features
+## Features
 
-- **Bulk PDF Upload**: Upload up to 20 PDF resumes at a time. Text extraction runs asynchronously using `pdfplumber` in a worker threadpool (`run_in_threadpool`) to prevent blocking FastAPI's event loop.
+- **Bulk PDF Upload**: Accepts up to 20 PDF resumes per batch. Text extraction runs asynchronously via `pdfplumber` in a worker threadpool (`run_in_threadpool`) to avoid blocking FastAPI's async event loop.
 - **Dual Screening Modes**:
-  - **LLM Mode (Groq)**: Extracts candidate fit score (0–100), concise summary, strengths, weaknesses, red flags (e.g., employment gaps), detected role, experience level, CGPA, branch, batch year, location, detected skills, and missing skills.
-  - **TF-IDF Baseline Mode**: Uses scikit-learn's `TfidfVectorizer` and cosine similarity with a custom tech tokenizer. Serves as a deterministic, non-generative baseline to evaluate keyword match without generative hallucination or demographic bias.
-- **Auto-Sort (No JD Required)**: Categorizes uploaded resumes by technical role (e.g., Web Developer, ML/AI, Python Developer, Data Analyst) and experience level when no job description is provided.
+  - **LLM Mode (Groq)**: Prompts an LLM (`openai/gpt-oss-120b` or fallbacks via Groq) in JSON mode to generate an estimated fit score (0–100), a concise summary, strengths, weaknesses, and potential concerns for human review. Also extracts basic metadata like candidate-stated CGPA, branch, batch year, and listed skills.
+  - **TF-IDF Baseline Mode**: Uses scikit-learn's `TfidfVectorizer` and cosine similarity with a custom tech tokenizer. Provides a deterministic, non-generative baseline to check keyword overlap without LLM prompt variance.
+- **LLM-Based Role Tagging (No JD Required)**: When no job description is provided, the LLM maps each resume against a fixed enum of common roles (e.g., Web Developer, ML/AI Engineer, Python Developer, Data Analyst) and estimates experience level.
 - **Human-in-the-Loop Review**:
-  - ScreenIQ does not auto-shortlist or auto-reject candidates.
-  - An interactive comparison modal allows recruiters to inspect up to 4 candidates side-by-side across scores, academic details, strengths, weaknesses, and a skills overlap grid before making decisions.
-- **Analytics Visualizations**: Visualizes score distribution (grouped into ranges: 90+, 80–89, etc.) and role distribution using Recharts bar and pie charts.
-- **Role Filtering**: Filter screened candidates by detected role in the interface without re-running the screening.
-- **Session History & Guest Mode**:
-  - Guest mode allows up to 3 screenings without signing up.
-  - Supabase authentication enables saving screening sessions and candidate results to a database for review and re-export.
-- **Excel-Compatible CSV Export**: Exports results to CSV with a UTF-8 BOM (`\uFEFF`) and character escaping to prevent column-shifting errors in Microsoft Excel.
+  - Does not automate shortlisting or rejection decisions.
+  - Provides a side-by-side modal to compare up to 4 candidates across extracted fields and an interactive skills overlap matrix.
+- **Visual Dashboards**: Displays score distribution (bucketed into ranges: 90+, 80–89, etc.) and role distribution using Recharts bar and pie charts.
+- **Role-Based Filtering**: Filter parsed candidates by tagged role directly in the UI.
+- **History & Authentication**:
+  - Guest mode allows up to 3 trial screenings without an account.
+  - Optional Supabase authentication allows saving screening sessions and candidate results for later review and re-export.
+- **Excel-Compatible CSV Export**: Exports candidate results as a UTF-8 BOM (`\uFEFF`) encoded CSV with escaped fields to prevent column shifts in spreadsheet software.
+
+---
+
+## 🔍 Design Realities, Limitations & Responsible AI
+
+An AI resume screener touches a sensitive domain where fairness, bias, and reliability are critical concerns. Here is an honest accounting of how the system works and where its limitations lie:
+
+1. **"Potential Concerns" vs. Deterministic Gap Detection**:
+   - The system does **not** have an employment-timeline check, date-arithmetic parser, or rule engine.
+   - When the LLM outputs items in `red_flags`, it is simply generating subjective string predictions based on prompt instructions. The model may overlook genuine career gaps or hallucinate inconsistencies that do not exist. These items must be treated as suggestions for human verification, not factual findings.
+
+2. **Role Tagging via Fixed Prompt Enums**:
+   - Role tagging is not a trained machine learning classifier. It prompts the LLM to choose from a predefined list of string constants defined in the prompt.
+
+3. **Demographic Bias & PII**:
+   - Raw resume text is sent directly to the model without stripping personally identifiable information (PII) such as candidate names, locations, graduation years, or college names.
+   - Because LLMs reflect biases present in their training data, scores and summaries may be subject to demographic proxy bias. Human verification is essential.
+
+4. **Absence of Ground-Truth Benchmark Evaluation**:
+   - While both an LLM ranker and a TF-IDF baseline are implemented in the code, the system currently lacks a formal empirical evaluation (e.g., rank correlation, agreement percentage, or precision against human-labeled screening datasets).
+
+5. **Deployment Scope**:
+   - ScreenIQ is an exploratory portfolio project hosted on free-tier infrastructure (Vercel for the frontend, Render for the backend), not a production enterprise HR system.
 
 ---
 
@@ -39,8 +62,8 @@ To avoid relying strictly on generative LLM evaluations, ScreenIQ provides a dua
 ### Frontend
 - **React 19** + **Vite**
 - **Tailwind CSS**
-- **Recharts** (Score distribution bar chart, role distribution pie chart)
-- **React Router** (`HashRouter` for client routing and PKCE password recovery compatibility)
+- **Recharts** (Bar & Pie chart visualizations)
+- **React Router** (`HashRouter` for SPA routing and PKCE password recovery compatibility)
 - **Supabase JS** client
 
 ### Backend
@@ -48,8 +71,8 @@ To avoid relying strictly on generative LLM evaluations, ScreenIQ provides a dua
 - **Uvicorn** (ASGI server)
 - **pdfplumber** (PDF text extraction)
 - **scikit-learn** & **NumPy** (TF-IDF vectorization & cosine similarity)
-- **Groq API** (`AsyncGroq` with JSON response mode; default model `openai/gpt-oss-120b` with fallback to `qwen/qwen3.8-27b` and `openai/gpt-oss-20b`)
-- **Supabase Python SDK** (authenticated database persistence for sessions and candidate records)
+- **Groq API** (`AsyncGroq` with JSON response mode; default model `openai/gpt-oss-120b` with fallbacks)
+- **Supabase Python SDK** (authenticated database writes for sessions and candidate records)
 
 ---
 
@@ -58,17 +81,17 @@ To avoid relying strictly on generative LLM evaluations, ScreenIQ provides a dua
 ```
 ScreenIQ/
 ├── backend/
-│   ├── main.py                 # FastAPI app entrypoint & CORS middleware
+│   ├── main.py                 # FastAPI entrypoint & CORS middleware
 │   ├── supabase_client.py      # Supabase client setup
 │   ├── requirements.txt        # Python backend dependencies
-│   ├── Procfile                # Deployment config
+│   ├── Procfile                # Render / deployment config
 │   ├── models/
 │   │   └── schemas.py          # Pydantic schemas (ResumeResult, RankedResume)
 │   ├── routers/
 │   │   └── resumes.py          # /upload, /rank, /auto-sort endpoints
 │   └── services/
-│       ├── parser.py           # PDF text extraction via pdfplumber
-│       └── ranker.py           # Groq LLM & TF-IDF ranking implementations
+│       ├── parser.py           # Threadpooled PDF text extraction (pdfplumber)
+│       └── ranker.py           # Groq LLM & TF-IDF ranking logic
 ├── frontend/
 │   ├── src/
 │   │   ├── App.jsx             # Top-level routing & auth state
@@ -78,7 +101,7 @@ ScreenIQ/
 │   │   │   └── Navbar.jsx      # Navigation bar
 │   │   └── pages/
 │   │       ├── Landing.jsx     # Landing page
-│   │       ├── ScreeningTool.jsx # Screening interface, charts, matrix & export
+│   │       ├── ScreeningTool.jsx # Screening UI, charts, matrix & CSV export
 │   │       ├── Login.jsx       # Supabase email/password login & registration
 │   │       ├── ForgotPassword.jsx
 │   │       └── ResetPassword.jsx
@@ -129,7 +152,7 @@ Run the FastAPI backend:
 ```bash
 uvicorn main:app --reload --port 8000
 ```
-Backend will be available at `http://127.0.0.1:8000` (Swagger docs at `http://127.0.0.1:8000/docs`).
+Backend runs at `http://127.0.0.1:8000` (interactive docs at `http://127.0.0.1:8000/docs`).
 
 ### 3. Frontend Setup
 Open a new terminal:
@@ -147,7 +170,7 @@ Start the Vite development server:
 ```bash
 npm run dev
 ```
-Frontend will be running at `http://localhost:5173`.
+Frontend runs at `http://localhost:5173`.
 
 ---
 
@@ -155,8 +178,8 @@ Frontend will be running at `http://localhost:5173`.
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `POST` | `/api/rank` | Uploads up to 20 PDFs and ranks them against a job description using `llm` (default) or `tfidf`. Saves results to Supabase if Bearer token is provided. |
-| `POST` | `/api/auto-sort` | Uploads up to 20 PDFs and categorizes candidates by role without requiring a job description. |
+| `POST` | `/api/rank` | Uploads up to 20 PDFs and evaluates them against a job description using `llm` (default) or `tfidf`. Saves results to Supabase if Bearer token is provided. |
+| `POST` | `/api/auto-sort` | Uploads up to 20 PDFs and tags candidates by role and experience using a prompt enum without requiring a job description. |
 | `POST` | `/api/upload` | Parses PDF files and returns extracted plain text. |
 | `GET` | `/` | Health check endpoint (`{"status": "resume screener is running"}`). |
 
