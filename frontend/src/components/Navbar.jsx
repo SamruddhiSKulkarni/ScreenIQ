@@ -42,7 +42,7 @@ export default function Navbar({ user }) {
 
   return (
     <>
-      <nav className="border-b border-slate-700 px-8 py-4 flex items-center justify-between bg-slate-900">
+      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/70 border-b border-white/[0.08] px-6 sm:px-8 py-3.5 flex items-center justify-between transition-all shadow-sm">
         <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           <img src="/logo.png" alt="ScreenIQ Logo" className="w-8 h-8 object-contain" />
           <span className="text-white font-bold text-lg">ScreenIQ</span>

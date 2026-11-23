@@ -132,7 +132,7 @@ export default function Landing() {
 
       {/* 2. "WHAT YOU'LL SEE" SECTION (Interactive Product Preview Table) */}
       <section id="preview" className="max-w-5xl mx-auto px-6 py-12 scroll-mt-6">
-        <div className="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl">
+        <div className="backdrop-blur-xl bg-slate-900/60 border border-white/10 border-t-white/20 rounded-2xl p-6 sm:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.36)]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
             <div>
               <div className="inline-block bg-blue-950/80 border border-blue-800/70 text-blue-300 text-xs px-2.5 py-1 rounded-md mb-2 font-medium">
@@ -355,7 +355,7 @@ export default function Landing() {
               desc: "Download character-escaped UTF-8 CSVs that open properly in Excel and Google Sheets without column shifts."
             }
           ].map((f, i) => (
-            <div key={i} className="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 flex flex-col justify-between hover:border-slate-600 transition-colors">
+            <div key={i} className="backdrop-blur-md bg-slate-900/40 border border-white/[0.08] border-t-white/15 rounded-2xl p-6 flex flex-col justify-between hover:border-white/20 hover:bg-slate-800/40 hover:-translate-y-0.5 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
               <div>
                 <div className="text-2xl mb-3">{f.icon}</div>
                 <h3 className="text-white font-semibold text-lg mb-1 leading-snug">
@@ -375,7 +375,7 @@ export default function Landing() {
 
       {/* 4. TRUST, DATA HANDLING & RESPONSIBLE AI LIMITATIONS */}
       <section className="max-w-5xl mx-auto px-6 py-10">
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8">
+        <div className="backdrop-blur-xl bg-slate-900/50 border border-white/10 border-t-white/20 rounded-2xl p-8 shadow-xl">
           <h2 className="text-xl font-bold text-white mb-2">
             Data Handling & Assistive AI Principles
           </h2>
@@ -384,7 +384,7 @@ export default function Landing() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-300">
-            <div className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4">
+            <div className="backdrop-blur-sm bg-slate-950/40 border border-white/[0.06] rounded-xl p-4">
               <h3 className="text-white font-semibold text-sm mb-2 flex items-center gap-1.5">
                 <span>🔒 Privacy & Data Retention</span>
               </h3>
@@ -393,7 +393,7 @@ export default function Landing() {
               </p>
             </div>
 
-            <div className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4">
+            <div className="backdrop-blur-sm bg-slate-950/40 border border-white/[0.06] rounded-xl p-4">
               <h3 className="text-white font-semibold text-sm mb-2 flex items-center gap-1.5">
                 <span>⚖️ Assistive, Not Autonomous</span>
               </h3>
@@ -402,7 +402,7 @@ export default function Landing() {
               </p>
             </div>
 
-            <div className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4">
+            <div className="backdrop-blur-sm bg-slate-950/40 border border-white/[0.06] rounded-xl p-4">
               <h3 className="text-white font-semibold text-sm mb-2 flex items-center gap-1.5">
                 <span>🛡️ Error & Output Resilience</span>
               </h3>
@@ -437,7 +437,7 @@ export default function Landing() {
               desc: "Get explainable scores, inspect potential concerns, and cross-reference with the TF-IDF baseline."
             }
           ].map((s, i) => (
-            <div key={i} className="text-center bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6">
+            <div key={i} className="text-center backdrop-blur-md bg-slate-900/40 border border-white/[0.08] border-t-white/15 rounded-2xl p-6 shadow-sm hover:border-white/20 transition-colors">
               <div className="w-12 h-12 bg-blue-600/90 text-white rounded-xl flex items-center justify-center mx-auto mb-4 font-bold text-base shadow-md shadow-blue-600/20">
                 {s.step}
               </div>
@@ -450,7 +450,7 @@ export default function Landing() {
 
       {/* 6. CALL TO ACTION */}
       <section className="text-center px-6 py-14">
-        <div className="bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700/80 rounded-3xl p-10 max-w-2xl mx-auto shadow-xl">
+        <div className="backdrop-blur-2xl bg-gradient-to-b from-slate-900/80 to-slate-950/90 border border-white/10 border-t-white/25 rounded-3xl p-10 max-w-2xl mx-auto shadow-2xl">
           <h2 className="text-3xl font-bold text-white mb-3 tracking-tight">
             Ready to screen candidates with confidence?
           </h2>

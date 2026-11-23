@@ -35,9 +35,19 @@ export default function App() {
 
   return (
     <HashRouter>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex flex-col">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col relative overflow-x-hidden selection:bg-blue-600 selection:text-white">
+        {/* Ambient Glows for Frosted Glassmorphism */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+          {/* Top-center electric indigo / sky blue glow */}
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[720px] h-[450px] bg-gradient-to-b from-indigo-500/15 via-blue-500/10 to-transparent rounded-full blur-[130px]" />
+          {/* Mid-right soft emerald glow for positive outcome aura */}
+          <div className="absolute top-1/3 -right-40 w-[550px] h-[550px] bg-emerald-500/[0.07] rounded-full blur-[140px]" />
+          {/* Bottom-left soft cyan/blue accent */}
+          <div className="absolute -bottom-20 -left-32 w-[520px] h-[520px] bg-cyan-500/[0.06] rounded-full blur-[130px]" />
+        </div>
+
         <Navbar user={user} />
-        <div className="flex-1">
+        <div className="flex-1 relative z-10">
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/tool" element={<ScreeningTool user={user} />} />

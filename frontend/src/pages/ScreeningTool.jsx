@@ -27,7 +27,7 @@ function AnalyticsPanel({ results }) {
   return (
     <div className="mt-10 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Score Distribution */}
-      <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+      <div className="backdrop-blur-xl bg-slate-900/60 border border-white/10 border-t-white/20 rounded-2xl p-6 shadow-xl">
         <h3 className="text-white font-semibold mb-1">Score Distribution</h3>
         <p className="text-slate-500 text-xs mb-4">Candidates grouped by score range</p>
         <ResponsiveContainer width="100%" height={200}>
@@ -44,7 +44,7 @@ function AnalyticsPanel({ results }) {
       </div>
 
       {/* Role Distribution */}
-      <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+      <div className="backdrop-blur-xl bg-slate-900/60 border border-white/10 border-t-white/20 rounded-2xl p-6 shadow-xl">
         <h3 className="text-white font-semibold mb-1">Role Distribution</h3>
         <p className="text-slate-500 text-xs mb-4">Breakdown of detected candidate roles</p>
         <ResponsiveContainer width="100%" height={200}>
@@ -244,12 +244,12 @@ export default function ScreeningTool({ user }) {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+        <div className="backdrop-blur-xl bg-slate-900/60 border border-white/10 border-t-white/20 rounded-2xl p-6 shadow-xl">
           <label className="block text-sm font-medium text-slate-300 mb-3">
             Job Description
           </label>
           <textarea
-            className="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 h-32 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 mb-4"
+            className="w-full bg-slate-950/70 border border-white/10 rounded-xl p-3 h-32 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 mb-4 transition-colors"
             placeholder="Paste the job description here..."
             value={jd}
             onChange={e => setJd(e.target.value)}
@@ -261,7 +261,7 @@ export default function ScreeningTool({ user }) {
             <button
               onClick={() => setMethod('llm')}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-colors ${
-                method === 'llm' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                method === 'llm' ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30' : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 border border-white/5'
               }`}
             >
               ✨ AI Analysis
@@ -269,7 +269,7 @@ export default function ScreeningTool({ user }) {
             <button
               onClick={() => setMethod('tfidf')}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-colors ${
-                method === 'tfidf' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                method === 'tfidf' ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30' : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 border border-white/5'
               }`}
             >
               🧮 TF-IDF (Math)
@@ -277,7 +277,7 @@ export default function ScreeningTool({ user }) {
           </div>
         </div>
 
-        <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+        <div className="backdrop-blur-xl bg-slate-900/60 border border-white/10 border-t-white/20 rounded-2xl p-6 shadow-xl">
           <label className="block text-sm font-medium text-slate-300 mb-3">
             Upload Resumes (PDF only)
           </label>
@@ -368,11 +368,11 @@ export default function ScreeningTool({ user }) {
             </button>
           </div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden mb-6">
+          <div className="backdrop-blur-xl bg-slate-900/60 border border-white/10 border-t-white/20 rounded-2xl overflow-hidden mb-6 shadow-xl">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-slate-700">
+                  <tr className="border-b border-white/10 bg-slate-950/40">
                     <th className="text-left text-slate-400 text-sm font-medium px-6 py-4 w-16">Compare</th>
                     <th className="text-left text-slate-400 text-sm font-medium px-6 py-4">Rank</th>
                     <th className="text-left text-slate-400 text-sm font-medium px-6 py-4">Candidate</th>
@@ -384,7 +384,7 @@ export default function ScreeningTool({ user }) {
                 </thead>
                 <tbody>
                   {filteredResults.map((r, i) => (
-                    <tr key={i} className="border-b border-slate-700 hover:bg-slate-700 transition-colors">
+                    <tr key={i} className="border-b border-white/5 hover:bg-slate-800/50 transition-colors">
                       <td className="px-6 py-4">
                         <input
                           type="checkbox"
@@ -431,7 +431,7 @@ export default function ScreeningTool({ user }) {
 
           <h3 className="text-xl font-bold text-white mb-4">Detailed Breakdown</h3>
           {filteredResults.map((r, i) => (
-            <div key={i} className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-4">
+            <div key={i} className="backdrop-blur-xl bg-slate-900/60 border border-white/10 border-t-white/20 rounded-2xl p-6 mb-4 shadow-xl">
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-3">
                   <span className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${getRankBadge(r.rank)}`}>
@@ -447,19 +447,19 @@ export default function ScreeningTool({ user }) {
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-slate-900 rounded-xl p-4">
+                <div className="backdrop-blur-sm bg-slate-950/60 border border-white/5 rounded-xl p-4">
                   <p className="text-green-400 text-xs font-semibold mb-2">Strengths</p>
                   {r.strengths?.map((s, j) => (
                     <p key={j} className="text-slate-300 text-xs mb-1">• {s}</p>
                   ))}
                 </div>
-                <div className="bg-slate-900 rounded-xl p-4">
+                <div className="backdrop-blur-sm bg-slate-950/60 border border-white/5 rounded-xl p-4">
                   <p className="text-amber-400 text-xs font-semibold mb-2">Weaknesses</p>
                   {r.weaknesses?.map((s, j) => (
                     <p key={j} className="text-slate-300 text-xs mb-1">• {s}</p>
                   ))}
                 </div>
-                <div className="bg-slate-900 rounded-xl p-4 border border-rose-900/30">
+                <div className="backdrop-blur-sm bg-slate-950/60 border border-rose-900/40 rounded-xl p-4">
                   <p className="text-rose-400 text-xs font-semibold mb-2 flex items-center gap-1">
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     Missing Skills
@@ -469,11 +469,11 @@ export default function ScreeningTool({ user }) {
                     : <p className="text-emerald-400 text-xs">No missing skills detected</p>
                   }
                 </div>
-                <div className="bg-slate-900 rounded-xl p-4">
-                  <p className="text-red-400 text-xs font-semibold mb-2">Red Flags</p>
+                <div className="backdrop-blur-sm bg-slate-950/60 border border-white/5 rounded-xl p-4">
+                  <p className="text-amber-300 text-xs font-semibold mb-2">Potential Concerns</p>
                   {r.red_flags && r.red_flags.length > 0
                     ? r.red_flags.map((s, j) => <p key={j} className="text-slate-300 text-xs mb-1">• {s}</p>)
-                    : <p className="text-green-400 text-xs">None detected</p>
+                    : <p className="text-emerald-400 text-xs">None detected</p>
                   }
                 </div>
               </div>
