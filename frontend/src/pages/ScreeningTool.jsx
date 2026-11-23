@@ -205,6 +205,12 @@ export default function ScreeningTool({ user }) {
     return "text-red-400 bg-red-900"
   }
 
+  const getScoreLabel = (score) => {
+    if (score >= 80) return "Strong match"
+    if (score >= 60) return "Partial match"
+    return "Weak match"
+  }
+
   const getRankBadge = (rank) => {
     if (rank === 1) return "bg-yellow-400 text-yellow-900"
     if (rank === 2) return "bg-gray-300 text-gray-800"
@@ -373,7 +379,7 @@ export default function ScreeningTool({ user }) {
                     <th className="text-left text-slate-400 text-sm font-medium px-6 py-4">Score</th>
                     <th className="text-left text-slate-400 text-sm font-medium px-6 py-4">Best Fit Role</th>
                     <th className="text-left text-slate-400 text-sm font-medium px-6 py-4">Summary</th>
-                    <th className="text-left text-slate-400 text-sm font-medium px-6 py-4">Red Flags</th>
+                    <th className="text-left text-slate-400 text-sm font-medium px-6 py-4">Potential Concerns</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -396,9 +402,14 @@ export default function ScreeningTool({ user }) {
                         <p className="text-white text-sm font-medium">{r.filename.replace(".pdf", "")}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`px-3 py-1 rounded-full text-sm font-bold ${getScoreColor(r.score)}`}>
-                          {r.score}/100
-                        </span>
+                        <div className="flex flex-col items-start">
+                          <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${getScoreColor(r.score)}`}>
+                            {r.score}/100
+                          </span>
+                          <span className="text-[11px] text-slate-400 font-medium mt-1">
+                            {getScoreLabel(r.score)}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <span className="text-blue-400 text-xs font-semibold">{r.detected_role}</span>
@@ -407,8 +418,8 @@ export default function ScreeningTool({ user }) {
                         <p className="text-slate-400 text-xs max-w-xs">{r.summary}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`text-xs px-2 py-1 rounded-full ${r.red_flags.length ? "bg-red-900 text-red-300" : "bg-green-900 text-green-300"}`}>
-                          {r.red_flags.length ? r.red_flags[0] : "None"}
+                        <span className={`text-xs px-2.5 py-1 rounded-md font-medium ${r.red_flags.length ? "bg-red-950 text-red-300 border border-red-800" : "bg-emerald-950 text-emerald-300 border border-emerald-800"}`}>
+                          {r.red_flags.length ? r.red_flags[0] : "None detected"}
                         </span>
                       </td>
                     </tr>
