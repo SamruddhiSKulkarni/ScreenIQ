@@ -82,12 +82,12 @@ export default function Landing() {
     <div className="text-slate-100 selection:bg-blue-600 selection:text-white">
       {/* 1. HERO SECTION WITH PROOF & REASSURANCE */}
       <section className="max-w-5xl mx-auto px-6 pt-16 pb-12 text-center">
-        {/* Proof / Trust pill */}
+        {/* Privacy / Architecture pill */}
         <div className="inline-flex items-center gap-2 bg-slate-800/90 border border-slate-700/80 text-slate-300 text-xs px-3.5 py-1.5 rounded-full mb-6 shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="font-medium text-slate-200">Screened 500+ resumes</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span className="font-medium text-slate-200">In-memory processing</span>
           <span className="text-slate-600">•</span>
-          <span>In-memory processing</span>
+          <span>Zero permanent storage</span>
           <span className="text-slate-600">•</span>
           <span>Never used for AI training</span>
         </div>
